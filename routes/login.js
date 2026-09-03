@@ -2,8 +2,10 @@ var express = require('express');
 var router = express.Router();
 var userSchema = require('../models/users.model')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const tokenMiddleware = require('../middleware/token.middleware');
 
-router.post('/login',async function(req, res, next) {
+router.post('/login', tokenMiddleware, async function(req, res, next) {
   let { username, password } = req.body
   let user = await userSchema.findOne({
     username: username,
@@ -27,6 +29,7 @@ router.post('/login',async function(req, res, next) {
         message: "Account is not approved"
       });
     }
+    let token = await jwt.sign({ foo:"bar" }, "1234")
     res.status(200).json({
       message: "Login Success",
       user: {
@@ -35,7 +38,7 @@ router.post('/login',async function(req, res, next) {
         role: user.role
       }
     });
-  res.send('Login Success');
+  res.send(token);
 });
 
 router.post('/register',async function(req, res, next) {
