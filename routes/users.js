@@ -21,3 +21,16 @@ router.post('/',async function(req, res, next) {
 });
 
 module.exports = router;
+
+router.put('/:id/approved',async function(req, res, next) {
+  let { id } = req.params
+  const status = "approved"
+
+  let user = await userSchema.findByOneAndUpdate(id, { status }, { new: true })
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found"
+    });
+  }
+  res.send(user);
+});
