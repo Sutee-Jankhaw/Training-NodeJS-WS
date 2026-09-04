@@ -12,11 +12,13 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
   })
   if (!user) {
       return res.status(400).send({
+        status: 400,
         message: 'Username or password is incorrect'
       });
     }
     if (user.status !== "approved") {
       return res.status(400).send({
+        status: 400,
         message: 'Account is not approved'
       });
     }
@@ -26,6 +28,7 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
     );
     if (!isMatch) {
       return res.status(401).send({
+        status: 400,
         message: 'Username or password is incorrect'
       });
     }

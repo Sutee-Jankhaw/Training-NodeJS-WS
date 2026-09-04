@@ -15,6 +15,11 @@ router.get('/', async function(req, res, next) {
 router.get('/:id', async function(req, res, next) {
   let { id } = req.params
   let product = await productSchema.findById(id)
+  if (!product) {
+    res.status(400).send({
+      data: null
+    })
+  }
   res.status(200).send({
       status: 200,
       message: 'Success',

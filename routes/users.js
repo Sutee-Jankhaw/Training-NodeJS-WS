@@ -13,7 +13,11 @@ router.put('/:id/approve',async function(req, res, next) {
       message: "User not found"
     });
   }
-  res.send(user);
+  res.status(201).send({
+      status: 201,
+      message: 'Updated User',
+      data: [user]
+    })
 });
 
 module.exports = router;
