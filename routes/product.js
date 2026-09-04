@@ -22,6 +22,16 @@ router.get('/:id', async function(req, res, next) {
     });
 });
 
+router.get('/:id/orders', async function(req, res, next) {
+  let { id } = req.params
+  let order = await orderSchema.find({ productId: id })
+  res.status(200).send({
+      status: 200,
+      message: 'Success',
+      data: order
+    });
+});
+
 router.post('/', async function(req, res, next) {
   let { productname, price, stock } = req.body
   let product = new productSchema({
