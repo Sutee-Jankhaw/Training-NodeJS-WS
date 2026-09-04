@@ -6,11 +6,12 @@ const jwt = require('jsonwebtoken');
 const tokenMiddleware = require('../middleware/token.middleware');
 
 router.post('/login', tokenMiddleware, async function(req, res, next) {
-  let { username, password } = req.body
-  let user = await userSchema.findOne({
-    username: username,
-  })
-  if (!user) {
+  try {
+    let { username, password } = req.body
+    let user = await userSchema.findOne({
+      username: username,
+    })
+    if (!user) {
       return res.status(400).send({
         status: 400,
         message: 'Username or password is incorrect'
@@ -42,18 +43,33 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
         role: user.role
       }]
     });
+  } catch (error) {
+    res.status(500).send(error)
+  }
 });
 
 router.post('/register',async function(req, res, next) {
-  let { username, password, role } = req.body
-  let user = new userSchema({
-    username: username,
-    password: await bcrypt.hash(password, 10),
-    status: 'not_approved',
-    role: role
-  })
-  await user.save()
-  res.status(201).send('Registered');
+  try {
+    let { username, password, role } = req.body
+    let user = new userSchema({
+      username: username,
+      password: await bcrypt.hash(password, 10),
+      status: 'not_approved',
+      role: role
+    })
+    await user.save()
+    res.send({
+      status: 200,
+      message: 'Register Success',
+      data: [{
+        id: user._id,
+        username: user.username,
+        role: user.role
+      }]
+    });
+  } catch (error) {
+    res.status(500).send(error)
+  }
 });
 
 module.exports = router;
