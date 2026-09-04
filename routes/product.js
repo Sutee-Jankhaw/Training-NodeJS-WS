@@ -108,6 +108,11 @@ router.put('/:id', async function(req, res, next) {
       { productname, price, stock },
       { new: true }
     )
+    if (!product) {
+      res.status(400).send({
+        data: null
+      })
+    }
     res.status(201).send({
         status: 201,
         message: 'Updated Product',
@@ -122,6 +127,11 @@ router.delete('/:id', async function(req, res, next) {
   try {
     let { id } = req.params
     let product = await productSchema.findByIdAndDelete(id)
+    if (!product) {
+      res.status(400).send({
+        data: null
+      })
+    }
     res.status(200).send({
         status: 200,
         message: 'Deleted Product',
