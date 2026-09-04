@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var productSchema = require('../models/products.model');
+var orderSchema = require('../models/orders.model')
 
 router.get('/', async function(req, res, next) {
   let product = await productSchema.find({})
@@ -34,6 +35,32 @@ router.post('/', async function(req, res, next) {
     status: 201,
     message: 'Created Product',
     data: [product]
+  })
+})
+
+router.post('/:id/orders', async function(req, res, next) {
+  let { quantity } = req.body
+  let { id } = req.params
+  let order = new orderSchema({
+    productId: id,
+    quantity: quantity,
+  })
+  
+  let updateStock = await productSchema.findOneAndUpdate(
+    { _id: id, stock: { $gte: quantity }},
+    { $inc: { stock: -quantity } },
+    { new: true }
+  )
+  if (!updateStock) {
+    return res.status(400).json({
+      message: "Not enough stock"
+    });
+  }
+  await order.save()
+  res.status(201).send({
+    status: 201,
+    message: 'Created Order',
+    data: [order]
   })
 })
 
