@@ -4,7 +4,9 @@ const { Schema } = mongoose
 const productSchema = new Schema({
     productname: { type: String },
     price: { type: Number},
-    Stock: { type: Number }
+    stock: { type: Number }
+},{
+    timestamps: true
 })
 
 module.exports = mongoose.model('products', productSchema)

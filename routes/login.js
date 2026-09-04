@@ -30,7 +30,8 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
       });
     }
     let token = await jwt.sign({ foo:'bar' }, '1234')
-    res.status(200).send({
+    res.send({
+      status: 200,
       message: 'Login Success',
       data: [{
         id: user._id,
