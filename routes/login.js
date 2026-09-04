@@ -11,8 +11,13 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
     username: username,
   })
   if (!user) {
-      return res.status(401).json({
-        message: "Username or password is incorrect"
+      return res.status(400).send({
+        message: 'Username or password is incorrect'
+      });
+    }
+    if (user.status !== "approved") {
+      return res.status(400).send({
+        message: 'Account is not approved'
       });
     }
     const isMatch = await bcrypt.compare(
@@ -20,25 +25,19 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
       user.password
     );
     if (!isMatch) {
-      return res.status(401).json({
-        message: "Username or password is incorrect"
+      return res.status(401).send({
+        message: 'Username or password is incorrect'
       });
     }
-    if (user.status !== "approved") {
-      return res.status(403).json({
-        message: "Account is not approved"
-      });
-    }
-    let token = await jwt.sign({ foo:"bar" }, "1234")
-    res.status(200).json({
-      message: "Login Success",
-      user: {
+    let token = await jwt.sign({ foo:'bar' }, '1234')
+    res.status(200).send({
+      message: 'Login Success',
+      data: [{
         id: user._id,
         username: user.username,
         role: user.role
-      }
+      }]
     });
-  res.send(token);
 });
 
 router.post('/register',async function(req, res, next) {
@@ -50,7 +49,7 @@ router.post('/register',async function(req, res, next) {
     role: role
   })
   await user.save()
-  res.send('Registered');
+  res.status(201).send('Registered');
 });
 
 module.exports = router;

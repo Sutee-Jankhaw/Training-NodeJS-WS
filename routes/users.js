@@ -3,7 +3,7 @@ var router = express.Router();
 var userSchema = require('../models/users.model')
 const bcrypt = require('bcrypt');
 
-router.put('/:id/approved',async function(req, res, next) {
+router.put('/:id/approve',async function(req, res, next) {
   let { id } = req.params
   const status = "approved"
 
