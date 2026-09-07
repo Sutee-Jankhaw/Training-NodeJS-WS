@@ -7,6 +7,7 @@ const orderSchema = new Schema({
       ref: "products",
     },
     quantity: { type: Number },
+    totalPrice: { type: Number }
 },{
     timestamps: true
 })

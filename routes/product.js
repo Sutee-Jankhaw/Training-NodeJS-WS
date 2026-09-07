@@ -73,9 +73,11 @@ router.post('/:id/orders', async function(req, res, next) {
   try {
     let { quantity } = req.body
     let { id } = req.params
+    let product = await productSchema.findById(id)
     let order = new orderSchema({
       productId: id,
       quantity: quantity,
+      totalPrice: quantity*product.price
     })
   
     let updateStock = await productSchema.findOneAndUpdate(
