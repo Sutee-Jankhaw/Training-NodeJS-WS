@@ -12,14 +12,14 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
       username: username,
     })
     if (!user) {
-      return res.status(400).send({
-        status: 400,
+      return res.status(401).send({
+        status: 401,
         message: 'Username or password is incorrect'
       });
     }
     if (user.status !== "approved") {
-      return res.status(400).send({
-        status: 400,
+      return res.status(401).send({
+        status: 401,
         message: 'Account is not approved'
       });
     }
@@ -29,7 +29,7 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
     );
     if (!isMatch) {
       return res.status(401).send({
-        status: 400,
+        status: 401,
         message: 'Username or password is incorrect'
       });
     }
@@ -37,11 +37,11 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
     res.send({
       status: 200,
       message: 'Login Success',
-      data: [{
+      data: {
         id: user._id,
         username: user.username,
         role: user.role
-      }]
+      }
     });
   } catch (error) {
     res.status(500).send(error)
