@@ -62,7 +62,7 @@ router.post('/', async function(req, res, next) {
     res.status(201).send({
       status: 201,
       message: 'Created Product',
-      data: [product]
+      data: product
     });
   } catch (error) {
     res.status(500).send(error)
@@ -92,7 +92,7 @@ router.post('/:id/orders', async function(req, res, next) {
     res.status(201).send({
       status: 201,
       message: 'Created Order',
-      data: [order]
+      data: order
     });
   } catch (error) {
     res.status(500).send(error)
@@ -116,7 +116,7 @@ router.put('/:id', async function(req, res, next) {
     res.status(201).send({
         status: 201,
         message: 'Updated Product',
-        data: [product]
+        data: product
     });
   } catch (error) {
     res.status(500).send(error)
@@ -135,7 +135,7 @@ router.delete('/:id', async function(req, res, next) {
     res.status(200).send({
         status: 200,
         message: 'Deleted Product',
-        data: [product]
+        data: product
     });
   } catch (error) {
     res.status(500).send(error)

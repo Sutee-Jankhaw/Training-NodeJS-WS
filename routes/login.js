@@ -61,11 +61,11 @@ router.post('/register',async function(req, res, next) {
     res.send({
       status: 200,
       message: 'Register Success',
-      data: [{
+      data: {
         id: user._id,
         username: user.username,
         role: user.role
-      }]
+      }
     });
   } catch (error) {
     res.status(500).send(error)

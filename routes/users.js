@@ -17,7 +17,7 @@ router.put('/:id/approve',async function(req, res, next) {
     res.status(201).send({
       status: 201,
       message: 'Updated User',
-      data: [user]
+      data: user
     })
   } catch (error) {
     res.status(500).send(error)
