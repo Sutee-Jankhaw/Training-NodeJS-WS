@@ -37,6 +37,7 @@ router.post('/login', tokenMiddleware, async function(req, res, next) {
     res.send({
       status: 200,
       message: 'Login Success',
+      token: token,
       data: {
         id: user._id,
         username: user.username,

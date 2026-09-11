@@ -51,9 +51,11 @@ router.get('/:id/orders', async function(req, res, next) {
 
 router.post('/', async function(req, res, next) {
   try {
-    let { productname, price, stock } = req.body
+    let { productname, description, image, price, stock } = req.body
     let product = new productSchema({
       productname: productname,
+      description: description,
+      image: image,
       price: price,
       stock: stock,
     })
@@ -69,45 +71,13 @@ router.post('/', async function(req, res, next) {
   }
 });
 
-router.post('/:id/orders', async function(req, res, next) {
-  try {
-    let { quantity } = req.body
-    let { id } = req.params
-    let product = await productSchema.findById(id)
-    let order = new orderSchema({
-      productId: id,
-      quantity: quantity,
-      totalPrice: quantity*product.price
-    })
-  
-    let updateStock = await productSchema.findOneAndUpdate(
-      { _id: id, stock: { $gte: quantity }},
-      { $inc: { stock: -quantity } },
-      { new: true }
-    )
-    if (!updateStock) {
-      return res.status(400).json({
-        message: "Not enough stock"
-      });
-    }
-    await order.save()
-    res.status(201).send({
-      status: 201,
-      message: 'Created Order',
-      data: order
-    });
-  } catch (error) {
-    res.status(500).send(error)
-  }
-});
-
 router.put('/:id', async function(req, res, next) {
   try {
-    let { productname, price, stock } = req.body
+    let { productname, description, image, price, stock } = req.body
     let { id } = req.params
     let product = await productSchema.findByIdAndUpdate(
       id,
-      { productname, price, stock },
+      { productname, description, image, price, stock },
       { new: true }
     )
     if (!product) {

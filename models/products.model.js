@@ -3,6 +3,8 @@ const { Schema } = mongoose
 
 const productSchema = new Schema({
     productname: { type: String },
+    description: { type: String },
+    image: { type: String },
     price: { type: Number},
     stock: { type: Number }
 },{
